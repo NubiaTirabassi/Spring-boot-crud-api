@@ -1,8 +1,35 @@
+# Arquivos de compilação Java
+target/
+bin/
+
+# Arquivos de configuração do IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Arquivos de log
+logs/
+*.log
+
+# Arquivos de dependências Maven
+.mvn/
+dependency-reduced-pom.xml
+mvnw
+mvnw.cmd
+
+# Arquivos de configuração do ambiente
+.env
+
+# Arquivos de configuração do banco de dados local
+*.h2.db
+*.h2.lock.db
+
+# Arquivos específicos do PostgreSQL
+*.pgsql 
+
 # Compiled class file
 *.class
-
-# Log file
-*.log
 
 # BlueJ files
 *.ctxt
@@ -22,3 +49,5 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+
