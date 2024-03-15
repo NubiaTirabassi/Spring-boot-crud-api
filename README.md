@@ -30,11 +30,21 @@ Resposta:
 Status: 200 OK
 Corpo: Mensagem de sucesso indicando que o usuário foi excluído com sucesso.
 
+# Respostas
+As respostas seguem o padrão HTTP e podem variar de acordo com a operação e o estado do sistema.
+
+200 OK: A solicitação foi bem-sucedida.
+201 Created: A solicitação foi bem-sucedida e um novo recurso foi criado.
+404 Not Found: O recurso solicitado não foi encontrado.
+500 Internal Server Error: Ocorreu um erro no servidor.
+
 # Dependências
 Spring Boot
 Spring Web
 Spring Data JPA
 Banco de Dados H2 (embutido)
+Banco de dados Postgress
+Postman
 Spring Boot Starter Test
 
 # Notas
