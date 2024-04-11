@@ -8,11 +8,11 @@
 	crossorigin="anonymous">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Sistema de CRUD</title>
 </head>
 <body>
-	<h3>CRUD spring boot teste</h3>
-	
+	<h3>Sistema de CRUD</h3>
+
 	<form action="" id="formCadastroUser">
 
 		<div class="mb-3">
@@ -30,14 +30,50 @@
 			<label for="idade" class="form-label">Informe sua idade</label> <input
 				type="number" class="form-control" id="idade">
 		</div>
-
-
 	</form>
-
-
 	<button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
 	<button type="button" class="btn btn-secondary"
 		onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
+	<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+		data-bs-target="#ModalPesquisarUser">Pesquisar</button>
+	<div class="modal fade" id="ModalPesquisarUser" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Pesquisar
+						usuário</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="nameBusca" class="col-form-label">Informe o
+								nome</label> <input type="text" class="form-control" id="nameBusca">
+						</div>
+						<button type="button" class="btn btn-success"
+							onclick="pesquisaUser()">Buscar</button>
+					</form>
+					<table class="table" id="tabelaResultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Editar</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
 		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -51,13 +87,58 @@
 		
 	</script>
 	<script type="text/javascript">
+		function pesquisaUser() {
+			var nome = $('#nameBusca').val();
+			if (nome != null && nome.trim() != '') {
+
+				//Ajax Buscar USUÁRIO
+				$.ajax({
+					method : "GET",
+					url : "buscarPorNome",
+					data :"name=" + nome,
+					success : function(response) {
+						$('#tabelaResultados > tbody > tr').remove();
+						
+						for(var i = 0; i < response.length; i++){
+							$('#tabelaResultados > tbody').append('<tr><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+')" class="btn btn-primary">Visualizar</button></td></tr>');
+
+						}
+						
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("Erro ao buscar usuário: " + xhr.responseText);
+				});
+
+			}
+
+	
+		}
+
+		function colocarEmEdicao(id) {
+			$.ajax({
+				method : "GET",
+				url : "buscaruserid",
+				data : "iduser=" + id,
+				success : function(response) {
+					$("#id").val(response.id);
+					$("#nome").val(response.nome);
+					$("#idade").val(response.idade);
+ 					
+					$('#ModalPesquisarUser').modal('hide');
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar usuário por id: " + xhr.responseText);
+			});
+
+		}
+
 		function salvarUsuario() {
 
 			var id = $("#id").val();
 			var nome = $("#nome").val();
 			var idade = $("#idade").val();
 
-			//Ajax
+			//Ajax salvar END POINT
 			$.ajax({
 				method : "POST",
 				url : "salvar",
